@@ -31,6 +31,6 @@
 *.out
 *.app
 
-*/.vscode/*
-*/build/*
-!*/build/*.uf2
+**/.vscode/*
+**/build/*
+!**/build/*.uf2
