@@ -46,7 +46,6 @@ const uint SCL_PIN_ZERO = 19;   // I2C SCL Pin for the Zero
 i2c_inst_t *i2c_ZERO = i2c1;    // I2C bus for the Zero
 const uint WARNING_PIN = 3;     // Warning Pin for the Zero
 const uint ACK_PIN = 2;         // Acknowledge Pin for the Zero
-bool zero_setup = false;        // Flag to check if the Zero has been setup
 
 
 // ############################## [ Function Prototypes ] ##########################
@@ -115,6 +114,14 @@ int main()
     // Setting up the LED
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    // Setup the warning pin as an output
+    gpio_init(WARNING_PIN);
+    gpio_set_dir(WARNING_PIN, GPIO_OUT);
+
+    // Setup the ack pin as an input
+    gpio_init(ACK_PIN);
+    gpio_set_dir(ACK_PIN, GPIO_IN);
 
     // Initialize accelerometer
     accelerometer_setup(i2c_ACC, SDA_PIN_ACC, SCL_PIN_ACC, ADXL343_ADDR);
@@ -293,20 +300,9 @@ int accelerometer_read(i2c_inst_t *i2c, const uint8_t ADXL343_ADDR)
 int issue_warning(uint WARNING_PIN, uint ACK_PIN)
 {
 
-    // Check if Zero has been setup
-    if (zero_setup == false)
-    {
-        // Setup the warning pin as an output
-        gpio_init(WARNING_PIN);
-        gpio_set_dir(WARNING_PIN, GPIO_OUT);
-
-        // Setup the ack pin as an input
-        gpio_init(ACK_PIN);
-        gpio_set_dir(ACK_PIN, GPIO_IN);
-
-        // Set zero_setup to true
-        zero_setup = true;
-    }
+    // Setup the warning pin as an output
+    gpio_init(WARNING_PIN);
+    gpio_set_dir(WARNING_PIN, GPIO_OUT);
 
     // Set the warning pin high
     gpio_put(WARNING_PIN, 1);
