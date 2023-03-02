@@ -119,6 +119,14 @@ int main()
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
+    // Setup the warning pin as an output
+    gpio_init(WARNING_PIN);
+    gpio_set_dir(WARNING_PIN, GPIO_OUT);
+
+    // Setup the ack pin as an input
+    gpio_init(ACK_PIN);
+    gpio_set_dir(ACK_PIN, GPIO_IN);
+
     // Initialize accelerometer
     accelerometer_setup(i2c_ACC, SDA_PIN_ACC, SCL_PIN_ACC, ADXL343_ADDR);
 
@@ -130,14 +138,14 @@ int main()
     {   
 
         // Print message saying that the Pi Pico is going to sleep
-        printf("Going to sleep until vibration is detected");
+        printf("Going to sleep until vibration is detected\r\n");
         uart_default_tx_wait_blocking();
         
         // Go to deep sleep until high signal is received on the trigger pin
         sleep_goto_dormant_until_level_high(trigger_pin);
 
         // Print message saying that the Pi Pico is awake
-        printf("Vibration detected, checking for landslide risk");
+        printf("Vibration detected, checking for landslide risk\r\n");
         uart_default_tx_wait_blocking();
 
         // Takes 200 measurements from the accelerometer and issues a warning if necessary
@@ -323,20 +331,9 @@ int accelerometer_read(i2c_inst_t *i2c, const uint8_t ADXL343_ADDR)
 int issue_warning(uint WARNING_PIN, uint ACK_PIN)
 {
 
-    // Check if Zero has been setup
-    if (zero_setup == false)
-    {
-        // Setup the warning pin as an output
-        gpio_init(WARNING_PIN);
-        gpio_set_dir(WARNING_PIN, GPIO_OUT);
-
-        // Setup the ack pin as an input
-        gpio_init(ACK_PIN);
-        gpio_set_dir(ACK_PIN, GPIO_IN);
-
-        // Set zero_setup to true
-        zero_setup = true;
-    }
+    // Setup the warning pin as an output
+    gpio_init(WARNING_PIN);
+    gpio_set_dir(WARNING_PIN, GPIO_OUT);
 
     // Set the warning pin high
     gpio_put(WARNING_PIN, 1);
