@@ -32,7 +32,7 @@ static const uint8_t REG_POWER_CTL = 0x2D;
 static const uint8_t REG_DATAX0 = 0x32;
 
 // Constants to be used in the program for the accelerometer
-static const uint8_t DEVID = 0xE5;
+static const uint8_t DEVID = 0xE5; 
 static const float SENSITIVITY_2G = 1.0 / 256;  // (g/LSB)
 static const float EARTH_GRAVITY = 9.80665;     // Earth's gravity in [m/s^2]
 
@@ -47,7 +47,6 @@ const uint SCL_PIN_ZERO = 19;   // I2C SCL Pin for the Zero
 i2c_inst_t *i2c_ZERO = i2c1;    // I2C bus for the Zero
 const uint WARNING_PIN = 3;     // Warning Pin for the Zero
 const uint ACK_PIN = 2;         // Acknowledge Pin for the Zero
-bool zero_setup = false;        // Flag to check if the Zero has been setup
 
 const uint trigger_pin = 10;     // Trigger Pin for the Vibration Sensor
 
