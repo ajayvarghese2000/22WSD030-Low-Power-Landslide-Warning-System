@@ -1,8 +1,13 @@
 # Set minimum required version of CMake
 cmake_minimum_required(VERSION 3.12)
 
+# Updating build path limit for Windows
+
 # Include build functions from Pico SDK
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+
+# We also need PICO EXTRAS
+include(C:\\VSARM\\sdk\\pico\\pico-extras\\external\\pico_extras_import.cmake)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
 project(seismic_monitoring_subsystem_interrupt C CXX ASM)
@@ -24,8 +29,9 @@ pico_add_extra_outputs(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} 
     pico_stdlib
     hardware_i2c
+    hardware_sleep
 )
 
 # Enable usb output, disable uart output
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_enable_stdio_uart(${PROJECT_NAME} 0)
+pico_enable_stdio_uart(${PROJECT_NAME} 1)
